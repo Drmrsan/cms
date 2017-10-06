@@ -1,3 +1,6 @@
+<?php ob_start(); ?>
+<?php include "../includes/db.php"; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,6 +35,9 @@
 <body>
 
     <div id="wrapper">
+
+        <?php if ($connection) {
+        } ?>
 
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -156,10 +162,10 @@
                         <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="posts.php"><i class="fa fa-fw fa-bar-chart-o"></i> Posts</a>
+                        <a href="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i> Posts</a>
                     </li>
                     <li>
-                        <a href="categories.php"><i class="fa fa-fw fa-table"></i> Categories</a>
+                        <a href="tables.html"><i class="fa fa-fw fa-table"></i> Categories</a>
                     </li>
                     <li>
                         <a href="forms.html"><i class="fa fa-fw fa-edit"></i> Forms</a>
@@ -200,17 +206,38 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Blank Page
+                            Posts
                             <small>Subheading</small>
                         </h1>
-                        <ol class="breadcrumb">
-                            <li>
-                                <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
-                            </li>
-                            <li class="active">
-                                <i class="fa fa-file"></i> Blank Page
-                            </li>
-                        </ol>
+
+                        <?php 
+
+                        if (isset($_GET['source'])) {
+                            $source = $_GET['source'];
+                        }else{
+                            $source = '';
+                        }
+                        
+
+                        switch ($source) {
+                            case 'add_post':
+                                include "includes/add_post.php";
+                                break;
+                            case '200':
+                                echo "200";
+                                break;
+
+                            case '300':
+                                echo "300";
+                                break;
+
+                            default:
+                                include "includes/all_posts.php";
+                                break;
+                        }
+
+                        ?>
+
                     </div>
                 </div>
                 <!-- /.row -->

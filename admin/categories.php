@@ -1,3 +1,6 @@
+<?php ob_start(); ?>
+<?php include "../includes/db.php"; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,6 +35,9 @@
 <body>
 
     <div id="wrapper">
+
+        <?php if ($connection) {
+        } ?>
 
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -156,10 +162,10 @@
                         <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="posts.php"><i class="fa fa-fw fa-bar-chart-o"></i> Posts</a>
+                        <a href="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i> Posts</a>
                     </li>
                     <li>
-                        <a href="categories.php"><i class="fa fa-fw fa-table"></i> Categories</a>
+                        <a href="tables.html"><i class="fa fa-fw fa-table"></i> Categories</a>
                     </li>
                     <li>
                         <a href="forms.html"><i class="fa fa-fw fa-edit"></i> Forms</a>
@@ -203,14 +209,131 @@
                             Blank Page
                             <small>Subheading</small>
                         </h1>
-                        <ol class="breadcrumb">
-                            <li>
-                                <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
-                            </li>
-                            <li class="active">
-                                <i class="fa fa-file"></i> Blank Page
-                            </li>
-                        </ol>
+                        
+
+
+                        <div class="col-xs-6">
+
+                            <?php 
+                                if (isset($_POST['submit'])) {
+                                    $cat_title = $_POST['cat_title'];
+
+                                    if ($cat_title == "" || empty($cat_title)) {
+                                        echo "Please fill in the field first!";
+                                    }else {
+                                        $query = "INSERT INTO categories (cat_title) ";
+                                        $query .= "VALUE('{$cat_title}') ";
+
+                                        $create_category = mysqli_query($connection, $query);
+
+                                        if (!$create_category) {
+                                            die("Query failed" . mysqli_error($connection));
+                                        }
+
+                                    }
+                                }
+                             ?>
+
+                            <form action="" method="POST">
+                                <div class="form-group">
+                                    <label for="cat_title">Category</label>
+                                    <input type="text" class="form-control" name="cat_title">
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" name="submit" value="Add category" class="btn btn-primary">
+                                </div>
+
+                            </form>
+
+                            <!-- UPDATE -->
+
+                            <form action="" method="POST">
+                                <div class="form-group">
+                                    <label for="cat_title">Edit Category</label>
+
+                                    <?php
+
+                                        if (isset($_GET['edit'])) {
+                                            $cat_id = $_GET['edit'];
+                                            $query = "SELECT * FROM categories WHERE cat_id = $cat_id ";
+                                            $categories_id = mysqli_query($connection, $query);
+                                        
+                                        
+                                        while($row = mysqli_fetch_assoc($categories_id)) {
+                                            $cat_id = $row['cat_id'];
+                                            $cat_title = $row['cat_title'];
+                                    ?>
+
+                                        <input type="text" class="form-control" name="cat_title" 
+                                        value="<?php if(isset($cat_title)) {echo $cat_title; } ?>">
+                                  
+                                  <?php }} ?>
+
+                                  <?php 
+                                            if (isset($_POST['update'])) {
+                                                $cat_title = $_POST['cat_title'];
+
+                                                $query = "UPDATE categories SET cat_title = '{$cat_title}' WHERE cat_id = '{$cat_id}' ";
+                                                $update_category = mysqli_query($connection, $query);
+
+                                                if (!$update_category) {
+                                                    die("Query failed" . mysqli_error($connection));
+                                                }
+                                            }
+                                  ?>
+
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" name="update" value="Update category" class="btn btn-primary">
+                                </div>
+
+                            </form>
+
+
+                        </div>
+
+                        <div class="col-xs-6">
+
+                            <?php 
+                                $query = "SELECT * FROM categories";
+                                $categories = mysqli_query($connection, $query);
+                            ?>
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Category title</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <?php 
+                                            while ($row = mysqli_fetch_assoc($categories)) {
+                                                $cat_title = $row['cat_title'];
+                                                $cat_id = $row['cat_id'];
+                                                echo "<tr>";
+                                                echo "<td>{$cat_id}</td>";
+                                                echo "<td>{$cat_title}</td>";
+                                                echo "<td><a href='categories.php?delete={$cat_id}'>Delete</td>";
+                                                echo "<td><a href='categories.php?edit={$cat_id}'>Edit</td>";
+                                                echo "</tr>";
+                                            }
+
+                                        ?>
+
+                                        <?php
+                                            if (isset($_GET['delete'])) {
+                                                $cat_id = $_GET['delete'];
+
+                                                $query = "DELETE FROM categories WHERE cat_id={$cat_id} ";
+                                                $delete_category = mysqli_query($connection, $query);
+
+                                                header("Location: categories.php");
+                                            }
+                                        ?>
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
                 </div>
                 <!-- /.row -->
