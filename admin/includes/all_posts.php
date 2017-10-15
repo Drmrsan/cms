@@ -36,14 +36,38 @@
             <td><?= $post_id; ?></td>
             <td><?= $post_author; ?></td>
             <td><?= $post_title; ?></td>
-            <td><?= $post_category_id; ?></td>
+
+            <?php 
+                $query = "SELECT * FROM categories WHERE cat_id = {$post_category_id} ";
+                $categories = mysqli_query($connection, $query);
+                
+                while($row = mysqli_fetch_assoc($categories)) {
+                      $cat_id = $row['cat_id'];
+                      $cat_title = $row['cat_title'];
+                      echo "<td>{$cat_title}</td>";
+                }
+            ?>
+            
+            
             <td><?= $post_status; ?></td>
             <td><img src="images/<?= $post_image; ?>" alt="image" width="100"></td>
             <td><?= $post_tags; ?></td>
             <td><?= $post_comments; ?></td>
             <td><?= $post_date; ?></td>
+            <td><a href="posts.php?source=edit_post&pid=<?= $post_id; ?>">Edit</a></td>            
+            <td><a href="posts.php?delete=<?= $post_id; ?>">Delete</a></td>
         </tr>
 
         <?php endwhile; ?>
     </tbody>
+
+    <?php if (isset($_GET['delete'])): ?>
+        <?php 
+            $delete_post_id = $_GET['delete'];
+            $query = "DELETE FROM posts WHERE post_id = {$delete_post_id} ";
+            $delete_post = mysqli_query($connection, $query);
+        ?>
+    <?php endif ?>
+
+
 </table>

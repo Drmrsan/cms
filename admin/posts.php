@@ -162,7 +162,7 @@
                         <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i> Posts</a>
+                        <a href="posts.php"><i class="fa fa-fw fa-bar-chart-o"></i> Posts</a>
                     </li>
                     <li>
                         <a href="tables.html"><i class="fa fa-fw fa-table"></i> Categories</a>
@@ -210,6 +210,8 @@
                             <small>Subheading</small>
                         </h1>
 
+                        <a href="?source=add_post" class="btn btn-success">Add post</a>
+
                         <?php 
 
                         if (isset($_GET['source'])) {
@@ -223,8 +225,8 @@
                             case 'add_post':
                                 include "includes/add_post.php";
                                 break;
-                            case '200':
-                                echo "200";
+                            case 'edit_post':
+                                include "includes/edit_post.php";
                                 break;
 
                             case '300':
