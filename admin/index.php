@@ -156,7 +156,7 @@
                         <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="posts.php"><i class="fa fa-fw fa-bar-chart-o"></i> Posts</a>
+                        <a href="admin/posts.php"><i class="fa fa-fw fa-bar-chart-o"></i> Posts</a>
                     </li>
                     <li>
                         <a href="categories.php"><i class="fa fa-fw fa-table"></i> Categories</a>

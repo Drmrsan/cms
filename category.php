@@ -12,7 +12,11 @@
             <!-- Blog Entries Column -->
             <div class="col-md-8">
 
-                <?php $query = "SELECT * FROM posts"; ?>
+                <?php if (isset($_GET['category'])): ?>
+                    <?php $post_category_id = $_GET['category']; ?>
+                <?php endif ?>
+
+                <?php $query = "SELECT * FROM posts WHERE post_category_id = $post_category_id"; ?>
                 <?php $posts = mysqli_query($connection, $query); ?>
 
                 <?php while ($row = mysqli_fetch_assoc($posts)) : ?>
