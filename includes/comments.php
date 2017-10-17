@@ -1,13 +1,29 @@
 <!-- Blog Comments -->
 
+<?php 
+    
+    if (isset($_POST['create_comment'])) {
+        $comment_author = $_POST['comment_author'];
+        echo $comment_author;
+    }
+
+ ?>
+
+
 <!-- Comments Form -->
 <div class="well">
     <h4>Leave a Comment:</h4>
-    <form role="form">
+    <form role="form" action="" method="POST">
         <div class="form-group">
-            <textarea class="form-control" rows="3"></textarea>
+            <input type="text" class="form-control" name="comment_author" placeholder="Author">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="form-group">
+            <input type="text" class="form-control" name="comment_email" placeholder="Email" >
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" rows="3" placeholder="Add comment..." name="comment_content"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" name="create_comment">Submit</button>
     </form>
 </div>
 
